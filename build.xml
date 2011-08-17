@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- mySimpleBuild.xml -->
-<project name="My App Builder" basedir="../">
+<project name="Inspirado" basedir=".">
 	<property name="FLEX_HOME" value="/opt/flex_sdk_4.5.1.21328/"/>
 	<property name="main.src.loc" location="${basedir}/src/main/flex"/>
 	<property name="test.src.loc" location="${basedir}/src/test/flex"/>
