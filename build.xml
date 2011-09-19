@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- mySimpleBuild.xml -->
 <project name="Inspirado" basedir=".">
-	<property name="FLEX_HOME" value="/opt/flex_sdk_4.5.1.21328/"/>
+	<property file="build.properties"/>
+	<property name="FLEX_HOME" value="${FLEX_HOME_4.5.1}"/>
 	<property name="main.src.loc" location="${basedir}/src/main/flex"/>
 	<property name="test.src.loc" location="${basedir}/src/test/flex"/>
-	<property name="lib.loc" location="${basedir}/libs"/>
+	<property name="lib.loc" location="${basedir}/libs/"/>	
+	<property name="lib.main.loc" location="${basedir}/libs/main"/>
+	<property name="lib.test.loc" location="${basedir}/libs/test"/>
 	<property name="output.loc" location="${basedir}/target"/>
 	<property name="bin.loc" location="${output.loc}/bin"/>
 	<property name="report.loc" location="${output.loc}/report"/>
 	<property name="dist.loc" location="${output.loc}/dist"/>
 	<property name="FILE_NAME" value="inspirado"/>
-	<property name="VERSION" value="0.1"/>
-	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+	<property name="VERSION" value="0.1-SNAPSHOT"/>
+	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME_4.5.1}/ant/lib/flexTasks.jar"/>
 	<taskdef resource="flexUnitTasks.tasks">
 		<classpath>
 			<fileset dir="${lib.loc}">
@@ -29,9 +32,11 @@
 	<target name="compile" description="Builds the swc" depends="init">
 		<compc output="${bin.loc}/${FILE_NAME}-${VERSION}.swc">
 			<include-sources dir="${main.src.loc}/no/" includes="*"/>
-			<!-- Libs -->
-			<external-library-path dir="${lib.loc}" includes="*.swc"/>
-			<external-library-path dir="${FLEX_HOME}/frameworks/libs/player/10.2" includes="*"/>
+			<!-- Libs -->			
+			<external-library-path file="${lib.main.loc}/as3commons-lang-0.2.1.swc" append="true"/>
+			<external-library-path file="${lib.main.loc}/playerglobal-10.2.swc" append="true"/>			
+			<!--<external-library-path dir="${lib.main.loc}" includes="*.swc"/>-->
+			<!--<external-library-path dir="${FLEX_HOME}/frameworks/libs/player/10.2" includes="*"/>-->
 		</compc>
 	</target>
 	<target name="test" depends="compile">
@@ -41,7 +46,9 @@
 			<testSource dir="${test.src.loc}">
 				<include name="**/*Test.as"/>
 			</testSource>
-			<library dir="${lib.loc}"/>
+			<library dir="${lib.test.loc}"/>
+			<library file="${lib.main.loc}/as3commons-lang-0.2.1.swc" />
+			<library file="${lib.main.loc}/playerglobal-10.2.swc" />
 		</flexunit>
 		<!-- Generate readable JUnit-style reports -->
 		<junitreport todir="${report.loc}">
